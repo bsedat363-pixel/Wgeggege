@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Özen Pide Kebap Lahmacun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Marcellus&family=Poppins:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --coal:#160f0b;
+    --coal-2:#1f150f;
+    --ember:#ff6a2b;
+    --ember-deep:#c73e1d;
+    --saffron:#e8a33d;
+    --copper:#b5651d;
+    --cream:#f3e6d3;
+    --cream-dim:#cbb89e;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--coal);
+    color:var(--cream);
+    font-family:'Poppins',sans-serif;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- ember canvas ---------- */
+  #embers{
+    position:fixed; inset:0; width:100%; height:100%; z-index:0; pointer-events:none; opacity:.55;
+  }
+
+  /* ---------- header / nav ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 6vw;
+    background:linear-gradient(to bottom, rgba(22,15,11,.95), rgba(22,15,11,0));
+    backdrop-filter:blur(2px);
+  }
+  .brand{
+    font-family:'Cinzel Decorative', serif;
+    font-size:1.1rem; letter-spacing:.08em; color:var(--saffron);
+    text-shadow:0 0 12px rgba(232,163,61,.5);
+  }
+  nav a{
+    color:var(--cream-dim); text-decoration:none; font-size:.8rem; letter-spacing:.05em;
+    margin-left:22px; text-transform:uppercase; transition:color .25s;
+  }
+  nav a:hover{color:var(--ember);}
+  nav{display:none;}
+  @media(min-width:760px){ nav{display:block;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative; z-index:2;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:0 6vw;
+  }
+  .hero .eyebrow{
+    font-family:'Space Mono',monospace; font-size:.75rem; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--ember); margin-bottom:18px; opacity:0; animation:fadeUp 1s .2s forwards;
+  }
+  .hero h1{
+    font-family:'Cinzel Decorative', serif;
+    font-size:clamp(2rem,7vw,4.4rem);
+    line-height:1.15;
+    background:linear-gradient(180deg,var(--cream) 10%, var(--saffron) 60%, var(--ember-deep) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 0 60px rgba(255,106,43,.25);
+    opacity:0; animation:fadeUp 1s .4s forwards;
+  }
+  .hero .sub{
+    font-family:'Marcellus', serif; font-size:clamp(1rem,2.4vw,1.4rem); color:var(--cream-dim);
+    margin-top:20px; max-width:560px;
+    opacity:0; animation:fadeUp 1s .7s forwards;
+  }
+  .hero .cta-row{
+    margin-top:44px; display:flex; gap:16px; flex-wrap:wrap; justify-content:center;
+    opacity:0; animation:fadeUp 1s 1s forwards;
+  }
+  .btn{
+    font-family:'Space Mono',monospace; font-size:.8rem; letter-spacing:.06em; text-transform:uppercase;
+    padding:14px 28px; border-radius:2px; text-decoration:none; border:1px solid var(--ember);
+    color:var(--cream); position:relative; overflow:hidden; transition:transform .3s, box-shadow .3s;
+  }
+  .btn.solid{ background:linear-gradient(120deg,var(--ember),var(--ember-deep)); border-color:transparent; }
+  .btn:hover{ transform:translateY(-3px); box-shadow:0 10px 30px rgba(255,106,43,.35); }
+
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(24px);} to{opacity:1; transform:translateY(0);} }
+
+  .skewer-divider{
+    position:relative; z-index:2; width:100%; display:flex; justify-content:center; margin:0 0 10px;
+    opacity:.85;
+  }
+  .skewer-divider svg{ width:min(420px,80vw); height:auto; }
+  .flame-icon{ display:inline-block; animation:flicker 2.4s infinite ease-in-out; transform-origin:bottom center; }
+  @keyframes flicker{
+    0%,100%{ transform:scale(1) rotate(0deg); filter:brightness(1); }
+    25%{ transform:scale(1.05,0.97) rotate(-2deg); filter:brightness(1.15); }
+    50%{ transform:scale(0.96,1.05) rotate(2deg); filter:brightness(.95); }
+    75%{ transform:scale(1.03,0.98) rotate(-1deg); filter:brightness(1.1); }
+  }
+
+  /* ---------- sections ---------- */
+  section{ position:relative; z-index:2; padding:90px 6vw; max-width:1200px; margin:0 auto; }
+  .section-head{ text-align:center; margin-bottom:56px; }
+  .section-head .num{
+    font-family:'Space Mono',monospace; color:var(--copper); font-size:.75rem; letter-spacing:.3em;
+  }
+  .section-head h2{
+    font-family:'Cinzel Decorative', serif; font-size:clamp(1.8rem,4.5vw,3rem); color:var(--cream);
+    margin-top:10px;
+  }
+  .section-head p{ color:var(--cream-dim); font-family:'Marcellus',serif; margin-top:10px; font-size:1rem; }
+
+  .reveal{ opacity:0; transform:translateY(36px); transition:opacity .8s ease, transform .8s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .menu-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:26px;
+  }
+  .dish{
+    background:linear-gradient(160deg, rgba(255,255,255,.04), rgba(255,255,255,.01));
+    border:1px solid rgba(232,163,61,.18);
+    border-radius:10px; padding:26px 22px; position:relative; overflow:hidden;
+    transition:transform .4s, border-color .4s, box-shadow .4s;
+  }
+  .dish::before{
+    content:""; position:absolute; inset:0; background:radial-gradient(circle at 30% 0%, rgba(255,106,43,.18), transparent 60%);
+    opacity:0; transition:opacity .4s;
+  }
+  .dish:hover{ transform:translateY(-8px); border-color:rgba(255,106,43,.55); box-shadow:0 18px 40px rgba(0,0,0,.4); }
+  .dish:hover::before{ opacity:1; }
+  .dish-icon{
+    font-size:2.4rem; display:block; margin-bottom:14px; filter:drop-shadow(0 0 14px rgba(255,106,43,.45));
+    transition:transform .4s;
+  }
+  .dish:hover .dish-icon{ transform:scale(1.15) rotate(-4deg); }
+  .dish h3{ font-family:'Marcellus',serif; font-size:1.15rem; color:var(--cream); margin-bottom:6px; }
+  .dish p{ font-size:.85rem; color:var(--cream-dim); line-height:1.5; min-height:40px; }
+  .dish .price{
+    margin-top:16px; font-family:'Space Mono',monospace; font-size:1.05rem; color:var(--saffron);
+    display:flex; justify-content:space-between; align-items:center; border-top:1px dashed rgba(232,163,61,.25); padding-top:12px;
+  }
+  .tag{ font-size:.65rem; letter-spacing:.1em; color:var(--ember); text-transform:uppercase; }
+
+  /* category tabs */
+  .tabs{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:50px; }
+  .tab{
+    font-family:'Space Mono',monospace; font-size:.75rem; letter-spacing:.06em; text-transform:uppercase;
+    padding:10px 20px; border-radius:30px; border:1px solid rgba(232,163,61,.3); color:var(--cream-dim);
+    background:transparent; cursor:pointer; transition:all .3s;
+  }
+  .tab.active, .tab:hover{ background:var(--ember); border-color:var(--ember); color:#160f0b; font-weight:700; }
+
+  .category-block{ display:none; }
+  .category-block.active{ display:block; }
+
+  /* ---------- QR section ---------- */
+  .qr-wrap{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:56px;
+  }
+  .qr-card{
+    background:radial-gradient(circle at 50% 20%, rgba(255,255,255,.06), rgba(255,255,255,.015));
+    border:1px solid rgba(232,163,61,.25); border-radius:16px; padding:34px;
+    position:relative; width:280px; text-align:center;
+  }
+  .qr-scanline{
+    position:absolute; left:8%; right:8%; height:2px; background:linear-gradient(90deg,transparent,var(--ember),transparent);
+    top:34px; animation:scan 2.6s linear infinite; box-shadow:0 0 12px var(--ember);
+  }
+  @keyframes scan{ 0%{ top:34px; } 50%{ top:calc(100% - 60px); } 100%{ top:34px; } }
+  #qrcode{ background:#fff; padding:12px; border-radius:8px; display:inline-block; }
+  .qr-card p.caption{ margin-top:16px; font-family:'Space Mono',monospace; font-size:.75rem; color:var(--cream-dim); }
+  .table-select{
+    display:flex; flex-direction:column; gap:14px; max-width:340px;
+  }
+  .table-select label{ font-family:'Space Mono',monospace; font-size:.75rem; letter-spacing:.1em; color:var(--saffron); text-transform:uppercase; }
+  .table-select select{
+    background:var(--coal-2); color:var(--cream); border:1px solid rgba(232,163,61,.35); border-radius:6px;
+    padding:12px 14px; font-family:'Poppins',sans-serif; font-size:.95rem;
+  }
+  .table-select .hint{ color:var(--cream-dim); font-size:.85rem; line-height:1.6; }
+
+  footer{
+    position:relative; z-index:2; text-align:center; padding:50px 6vw 40px; color:var(--cream-dim);
+    font-family:'Marcellus',serif; border-top:1px solid rgba(232,163,61,.15);
+  }
+  footer .brand{ display:block; margin-bottom:10px; }
+  footer small{ font-family:'Space Mono',monospace; font-size:.7rem; opacity:.6; display:block; margin-top:10px;}
+
+  /* ---------- order / cart ---------- */
+  .dish .qty-row{
+    display:flex; align-items:center; justify-content:space-between; margin-top:14px; gap:10px;
+  }
+  .qty-stepper{ display:flex; align-items:center; gap:10px; }
+  .qty-stepper button{
+    width:28px; height:28px; border-radius:50%; border:1px solid rgba(232,163,61,.4); background:transparent;
+    color:var(--cream); font-size:1rem; cursor:pointer; transition:all .25s; line-height:1;
+  }
+  .qty-stepper button:hover{ background:var(--ember); border-color:var(--ember); color:#160f0b; }
+  .qty-stepper span{ font-family:'Space Mono',monospace; min-width:18px; text-align:center; }
+  .add-btn{
+    font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.05em; text-transform:uppercase;
+    background:linear-gradient(120deg,var(--ember),var(--ember-deep)); border:none; color:#fff;
+    padding:8px 14px; border-radius:20px; cursor:pointer; transition:transform .25s, box-shadow .25s;
+  }
+  .add-btn:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(255,106,43,.4); }
+  .add-btn.added{ background:linear-gradient(120deg,#3d8b52,#276b39); }
+
+  .cart-fab{
+    position:fixed; right:22px; bottom:22px; z-index:80;
+    width:62px; height:62px; border-radius:50%; border:none; cursor:pointer;
+    background:linear-gradient(140deg,var(--ember),var(--ember-deep));
+    box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 0 rgba(255,106,43,.5);
+    display:flex; align-items:center; justify-content:center; font-size:1.5rem;
+    animation:pulseFab 2.6s infinite;
+  }
+  @keyframes pulseFab{ 0%,100%{ box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 0 0 rgba(255,106,43,.45); } 50%{ box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 0 12px rgba(255,106,43,0); } }
+  .cart-badge{
+    position:absolute; top:-4px; right:-4px; background:var(--coal); color:var(--saffron);
+    border:1px solid var(--saffron); border-radius:50%; min-width:22px; height:22px; font-size:.7rem;
+    display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace;
+  }
+
+  .cart-overlay{
+    position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:90; opacity:0; pointer-events:none; transition:opacity .35s;
+  }
+  .cart-overlay.open{ opacity:1; pointer-events:auto; }
+  .cart-drawer{
+    position:fixed; top:0; right:0; height:100%; width:min(400px,92vw); z-index:91;
+    background:var(--coal-2); border-left:1px solid rgba(232,163,61,.25);
+    transform:translateX(100%); transition:transform .4s ease; display:flex; flex-direction:column;
+    padding:26px 24px;
+  }
+  .cart-drawer.open{ transform:translateX(0); }
+  .cart-drawer h3{ font-family:'Marcellus',serif; color:var(--saffron); font-size:1.3rem; margin-bottom:18px; }
+  .cart-close{ position:absolute; top:22px; right:22px; background:none; border:none; color:var(--cream-dim); font-size:1.4rem; cursor:pointer; }
+  .cart-items{ flex:1; overflow-y:auto; margin-bottom:16px; }
+  .cart-item{
+    display:flex; justify-content:space-between; align-items:center; padding:12px 0;
+    border-bottom:1px dashed rgba(232,163,61,.2); font-size:.9rem;
+  }
+  .cart-item .ci-name{ color:var(--cream); }
+  .cart-item .ci-meta{ color:var(--cream-dim); font-family:'Space Mono',monospace; font-size:.8rem; }
+  .cart-item .ci-remove{ background:none; border:none; color:var(--ember); cursor:pointer; font-size:1rem; margin-left:10px; }
+  .cart-empty{ color:var(--cream-dim); font-family:'Marcellus',serif; text-align:center; margin-top:40px; }
+  .cart-form label{ display:block; font-family:'Space Mono',monospace; font-size:.7rem; letter-spacing:.08em; color:var(--saffron); text-transform:uppercase; margin:12px 0 6px; }
+  .cart-form input, .cart-form select, .cart-form textarea{
+    width:100%; background:var(--coal); color:var(--cream); border:1px solid rgba(232,163,61,.3);
+    border-radius:6px; padding:10px 12px; font-family:'Poppins',sans-serif; font-size:.9rem; resize:vertical;
+  }
+  .cart-total{
+    display:flex; justify-content:space-between; align-items:center; margin:16px 0;
+    font-family:'Space Mono',monospace; color:var(--saffron); font-size:1.1rem; border-top:1px solid rgba(232,163,61,.25); padding-top:14px;
+  }
+  .send-btn{
+    width:100%; padding:14px; border:none; border-radius:6px; cursor:pointer;
+    font-family:'Space Mono',monospace; text-transform:uppercase; letter-spacing:.05em; font-size:.85rem;
+    background:linear-gradient(120deg,var(--ember),var(--ember-deep)); color:#fff; transition:transform .25s;
+  }
+  .send-btn:hover{ transform:translateY(-2px); }
+  .send-btn:disabled{ opacity:.5; cursor:not-allowed; transform:none; }
+
+  .toast{
+    position:fixed; left:50%; bottom:100px; transform:translate(-50%,20px); z-index:120;
+    background:var(--coal-2); border:1px solid rgba(232,163,61,.4); color:var(--cream);
+    padding:14px 22px; border-radius:8px; font-family:'Marcellus',serif; font-size:.9rem;
+    opacity:0; pointer-events:none; transition:all .4s; text-align:center; max-width:90vw;
+  }
+  .toast.show{ opacity:1; transform:translate(-50%,0); }
+  .toast.error{ border-color:#c73e1d; color:#ffb4a0; }
+</style>
+</head>
+<body>
+
+<canvas id="embers"></canvas>
+
+<header>
+  <div class="brand">ÖZEN PİDE KEBAP LAHMACUN</div>
+  <nav>
+    <a href="#pide">Pide</a>
+    <a href="#kebap">Kebap</a>
+    <a href="#lahmacun">Lahmacun</a>
+    <a href="#tatli">Tatlı</a>
+    <a href="#qr">Karekod</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Taştan Fırın · Odun Ateşi · 1998'den Beri</div>
+  <h1>ÖZEN<br>PİDE KEBAP LAHMACUN</h1>
+  <p class="sub">Taş fırında pişen pide, korda demlenen kebap ve ince yufkada lahmacun — sofranıza ateşin lezzetini taşıyoruz.</p>
+  <div class="cta-row">
+    <a href="#pide" class="btn solid">Menüyü Gör</a>
+    <a href="#qr" class="btn">Karekod ile Sipariş</a>
+  </div>
+</section>
+
+<div class="skewer-divider">
+  <svg viewBox="0 0 400 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <line x1="10" y1="20" x2="390" y2="20" stroke="#b5651d" stroke-width="2"/>
+    <circle cx="60" cy="20" r="10" fill="#c73e1d"/>
+    <circle cx="110" cy="20" r="9" fill="#e8a33d"/>
+    <circle cx="160" cy="20" r="11" fill="#ff6a2b"/>
+    <circle cx="230" cy="20" r="9" fill="#c73e1d"/>
+    <circle cx="280" cy="20" r="10" fill="#e8a33d"/>
+    <circle cx="335" cy="20" r="9" fill="#ff6a2b"/>
+  </svg>
+</div>
+
+<!-- PIDE -->
+<section id="pide">
+  <div class="section-head reveal">
+    <div class="num">01 — TAŞ FIRIN</div>
+    <h2>Pideler</h2>
+    <p>Odun ateşinde, taş fırında kabartılmış hamur üzerine bol malzeme</p>
+  </div>
+  <div class="menu-grid" id="grid-pide"></div>
+</section>
+
+<!-- KEBAP -->
+<section id="kebap">
+  <div class="section-head reveal">
+    <div class="num">02 — KORDA PİŞEN</div>
+    <h2>Kebaplar</h2>
+    <p>Közün dumanını içine çeken, şişte usulca pişirilen etler</p>
+  </div>
+  <div class="menu-grid" id="grid-kebap"></div>
+</section>
+
+<!-- LAHMACUN -->
+<section id="lahmacun">
+  <div class="section-head reveal">
+    <div class="num">03 — İNCE YUFKA</div>
+    <h2>Lahmacunlar</h2>
+    <p>Çıtır kenarlı, bol soğanlı, limon sıkılmayı bekleyen klasik lezzet</p>
+  </div>
+  <div class="menu-grid" id="grid-lahmacun"></div>
+</section>
+
+<!-- İÇECEK -->
+<section id="icecek">
+  <div class="section-head reveal">
+    <div class="num">04 — SOFRANIN YANI</div>
+    <h2>İçecekler</h2>
+    <p>Ateşin sıcaklığını dengeleyen ferahlatıcı seçenekler</p>
+  </div>
+  <div class="menu-grid" id="grid-icecek"></div>
+</section>
+
+<!-- TATLI -->
+<section id="tatli">
+  <div class="section-head reveal">
+    <div class="num">05 — TATLI KAPANIŞ</div>
+    <h2>Tatlılar</h2>
+    <p>Şerbetli, kaymaklı, sıcacık — sofranın son perdesi</p>
+  </div>
+  <div class="menu-grid" id="grid-tatli"></div>
+</section>
+
+<!-- QR -->
+<section id="qr">
+  <div class="section-head reveal">
+    <div class="num">06 — KAREKOD SİSTEMİ</div>
+    <h2>Masadan Karekodla Sipariş</h2>
+    <p>Masanızı seçin, oluşan karekodu telefonunuzla okutarak menüye anında ulaşın</p>
+  </div>
+  <div class="qr-wrap reveal">
+    <div class="table-select">
+      <label for="masaNo">Masa Numarası</label>
+      <select id="masaNo"></select>
+      <p class="hint">Karekod, seçtiğiniz masaya özel menü bağlantısını oluşturur. Garsonunuz QR'ı okutup siparişinizi doğrudan sisteme iletebilir.</p>
+    </div>
+    <div class="qr-card">
+      <div class="qr-scanline"></div>
+      <div id="qrcode"></div>
+      <p class="caption" id="qrCaption">MASA 1 · SCAN TO ORDER</p>
+    </div>
+  </div>
+</section>
+
+<button class="cart-fab" id="cartFab" aria-label="Sepeti aç">🛒<span class="cart-badge" id="cartBadge">0</span></button>
+
+<div class="cart-overlay" id="cartOverlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <button class="cart-close" id="cartClose">✕</button>
+  <h3>Siparişiniz</h3>
+  <div class="cart-items" id="cartItems"><p class="cart-empty">Sepetiniz boş — menüden ürün ekleyin.</p></div>
+  <div class="cart-total"><span>Toplam</span><span id="cartTotal">₺0</span></div>
+  <div class="cart-form">
+    <label for="cartMasa">Masa Numarası</label>
+    <select id="cartMasa"></select>
+    <label for="cartName">Adınız (opsiyonel)</label>
+    <input type="text" id="cartName" placeholder="Ör. Ahmet">
+    <label for="cartNote">Sipariş Notu (opsiyonel)</label>
+    <textarea id="cartNote" rows="2" placeholder="Ör. Az acılı olsun"></textarea>
+  </div>
+  <button class="send-btn" id="sendOrder">Siparişi Gönder</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<footer>
+  <span class="brand">ÖZEN PİDE KEBAP LAHMACUN</span>
+  Taş Fırın Sokak No:7 · Her gün 11:00 – 23:00
+  <small>© 2026 Özen Pide Kebap Lahmacun — Ateşin olduğu yerde lezzet vardır.</small>
+</footer>
+
+<script>
+/* ---------------- ember particle canvas ---------------- */
+const canvas = document.getElementById('embers');
+const ctx = canvas.getContext('2d');
+let w,h,particles=[];
+function resize(){ w=canvas.width=window.innerWidth; h=canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+function makeParticle(){
+  return {
+    x: Math.random()*w,
+    y: h + Math.random()*100,
+    r: Math.random()*2.2 + 0.6,
+    speed: Math.random()*1.2 + 0.4,
+    drift: (Math.random()-0.5)*0.6,
+    life: Math.random()*1,
+    color: Math.random() > 0.5 ? '255,106,43' : '232,163,61'
+  };
+}
+for(let i=0;i<70;i++) particles.push(makeParticle());
+
+function animateEmbers(){
+  ctx.clearRect(0,0,w,h);
+  particles.forEach(p=>{
+    p.y -= p.speed;
+    p.x += p.drift;
+    p.life += 0.004;
+    const alpha = Math.max(0, 1 - p.life);
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(${p.color},${alpha*0.8})`;
+    ctx.shadowColor = `rgba(${p.color},0.8)`;
+    ctx.shadowBlur = 8;
+    ctx.fill();
+    if(p.y < -10 || p.life > 1){
+      Object.assign(p, makeParticle(), {y: h + Math.random()*40});
+    }
+  });
+  requestAnimationFrame(animateEmbers);
+}
+animateEmbers();
+
+/* ---------------- menu data ---------------- */
+const menus = {
+  pide: [
+    {icon:'🧀', name:'Kaşarlı Pide', desc:'Bol kaşar peyniri, tereyağı ile', price:180},
+    {icon:'🥩', name:'Kıymalı Pide', desc:'Özel baharatlı dana kıyma', price:190},
+    {icon:'🍳', name:'Karışık Pide', desc:'Kıyma, kaşar, sucuk ve yumurta', price:220},
+    {icon:'🌶️', name:'Sucuklu Pide', desc:'Ev yapımı sucuk ve kaşar', price:200},
+    {icon:'🥬', name:'Ispanaklı Pide', desc:'Taze ıspanak, kaşar, yumurta', price:170},
+  ],
+  kebap: [
+    {icon:'🔥', name:'Adana Kebap', desc:'Acılı, elde çekilmiş dana kıyma', price:250},
+    {icon:'🍢', name:'Urfa Kebap', desc:'Acısız, közde pişmiş şiş kebap', price:250},
+    {icon:'🍗', name:'Tavuk Şiş', desc:'Marine edilmiş, kor ateşte şiş', price:220},
+    {icon:'🥘', name:'Kuşbaşılı Kebap', desc:'Odun ateşinde kuşbaşı dana eti', price:260},
+    {icon:'🍽️', name:'Karışık Kebap Tabağı', desc:'Adana, Urfa, tavuk şiş bir arada', price:320},
+  ],
+  lahmacun: [
+    {icon:'🫓', name:'Klasik Lahmacun', desc:'İnce yufka, bol kıymalı harç', price:90},
+    {icon:'🧀', name:'Kaşarlı Lahmacun', desc:'Klasik harca ekstra kaşar', price:110},
+    {icon:'🌶️', name:'Acılı Lahmacun', desc:'Acı biberli özel harç', price:95},
+  ],
+  icecek: [
+    {icon:'🥛', name:'Ayran', desc:'Ev yapımı, taş bardakta soğuk', price:40},
+    {icon:'🍵', name:'Türk Çayı', desc:'İnce belli bardakta demli çay', price:30},
+    {icon:'🥤', name:'Şalgam', desc:'Acılı veya acısız', price:45},
+    {icon:'🧊', name:'Kola', desc:'Soğuk servis, 33cl', price:50},
+  ],
+  tatli: [
+    {icon:'🍯', name:'Baklava', desc:'Antep fıstıklı, şerbetli, el açması', price:120},
+    {icon:'🧀', name:'Künefe', desc:'Sıcak servis, kaymak ile', price:140},
+    {icon:'🍚', name:'Sütlaç', desc:'Fırında kavrulmuş, soğuk', price:90},
+    {icon:'🥧', name:'Kadayıf', desc:'Cevizli, şerbetli, sıcak', price:130},
+  ]
+};
+
+function renderGrid(key){
+  const el = document.getElementById('grid-'+key);
+  el.innerHTML = menus[key].map((d,i) => {
+    const id = key+'-'+i;
+    const safeName = d.name.replace(/"/g,'&quot;');
+    return `
+    <div class="dish reveal">
+      <span class="dish-icon">${d.icon}</span>
+      <h3>${d.name}</h3>
+      <p>${d.desc}</p>
+      <div class="price"><span class="tag">Özen</span><span>₺${d.price}</span></div>
+      <div class="qty-row">
+        <div class="qty-stepper">
+          <button type="button" class="qty-minus" data-id="${id}">−</button>
+          <span id="qty-${id}">0</span>
+          <button type="button" class="qty-plus" data-id="${id}">+</button>
+        </div>
+        <button type="button" class="add-btn" id="add-${id}" data-id="${id}" data-name="${safeName}" data-price="${d.price}">Sepete Ekle</button>
+      </div>
+    </div>
+  `;
+  }).join('');
+}
+Object.keys(menus).forEach(renderGrid);
+
+/* ---------------- sepet / sipariş sistemi ---------------- */
+// ⚠️ Telegram bot token'ı burada tarayıcıda herkese açık olacaktır.
+// Görselden sadece sohbet (chat) kimliği okunabildi; token adres çubuğunda kırpılmıştı.
+// BotFather'dan aldığınız tam token'ı aşağıya yapıştırın (örn: "883794118:AAExxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+const BOT_TOKEN = 'BOT_TOKEN_BURAYA_YAPISTIRIN';
+const CHAT_ID = '-1003726628490';
+
+const cart = {};       // id -> {name, price, qty}
+const pendingQty = {}; // id -> seçilen adet (henüz sepete eklenmedi)
+
+function stepQty(id, delta){
+  const current = pendingQty[id] || 0;
+  const next = Math.max(0, current + delta);
+  pendingQty[id] = next;
+  document.getElementById('qty-'+id).textContent = next;
+}
+
+function addToCart(id, name, price){
+  const qty = pendingQty[id] || 1;
+  if(!cart[id]) cart[id] = {name, price, qty:0};
+  cart[id].qty += qty;
+  pendingQty[id] = 0;
+  document.getElementById('qty-'+id).textContent = 0;
+  const btn = document.getElementById('add-'+id);
+  btn.textContent = 'Eklendi ✓';
+  btn.classList.add('added');
+  setTimeout(()=>{ btn.textContent='Sepete Ekle'; btn.classList.remove('added'); }, 900);
+  renderCart();
+}
+
+function removeFromCart(id){
+  delete cart[id];
+  renderCart();
+}
+
+function cartTotal(){
+  return Object.values(cart).reduce((sum,i)=> sum + i.price*i.qty, 0);
+}
+
+function renderCart(){
+  const wrap = document.getElementById('cartItems');
+  const ids = Object.keys(cart);
+  if(ids.length === 0){
+    wrap.innerHTML = '<p class="cart-empty">Sepetiniz boş — menüden ürün ekleyin.</p>';
+  } else {
+    wrap.innerHTML = ids.map(id => `
+      <div class="cart-item">
+        <div>
+          <div class="ci-name">${cart[id].name}</div>
+          <div class="ci-meta">${cart[id].qty} × ₺${cart[id].price} = ₺${cart[id].qty*cart[id].price}</div>
+        </div>
+        <button class="ci-remove" data-id="${id}">✕</button>
+      </div>
+    `).join('');
+  }
+  document.getElementById('cartTotal').textContent = '₺'+cartTotal();
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = ids.reduce((n,id)=>n+cart[id].qty,0);
+}
+renderCart();
+
+/* tüm sepet/adet butonları için tek delegasyon dinleyicisi (satır-içi onclick yerine) */
+document.addEventListener('click', (e)=>{
+  const minusBtn = e.target.closest('.qty-minus');
+  if(minusBtn){ stepQty(minusBtn.dataset.id, -1); return; }
+
+  const plusBtn = e.target.closest('.qty-plus');
+  if(plusBtn){ stepQty(plusBtn.dataset.id, 1); return; }
+
+  const addBtn = e.target.closest('.add-btn');
+  if(addBtn){ addToCart(addBtn.dataset.id, addBtn.dataset.name, parseFloat(addBtn.dataset.price)); return; }
+
+  const removeBtn = e.target.closest('.ci-remove');
+  if(removeBtn){ removeFromCart(removeBtn.dataset.id); return; }
+});
+
+/* cart drawer open/close */
+const cartFab = document.getElementById('cartFab');
+const cartDrawer = document.getElementById('cartDrawer');
+const cartOverlay = document.getElementById('cartOverlay');
+function openCart(){ cartDrawer.classList.add('open'); cartOverlay.classList.add('open'); }
+function closeCart(){ cartDrawer.classList.remove('open'); cartOverlay.classList.remove('open'); }
+cartFab.addEventListener('click', openCart);
+cartOverlay.addEventListener('click', closeCart);
+document.getElementById('cartClose').addEventListener('click', closeCart);
+
+function showToast(msg, isError){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 3800);
+}
+
+document.getElementById('sendOrder').addEventListener('click', async ()=>{
+  const ids = Object.keys(cart);
+  if(ids.length === 0){ showToast('Sepetiniz boş.', true); return; }
+  if(BOT_TOKEN === 'BOT_TOKEN_BURAYA_YAPISTIRIN'){
+    showToast('Bot token tanımlanmadı — lütfen site sahibiyle iletişime geçin.', true);
+    return;
+  }
+  const masa = document.getElementById('cartMasa').value;
+  const musteri = document.getElementById('cartName').value.trim();
+  const not = document.getElementById('cartNote').value.trim();
+
+  const lines = ids.map(id => `• ${cart[id].name} x${cart[id].qty} — ₺${cart[id].qty*cart[id].price}`);
+  let text = `🧾 YENİ SİPARİŞ — Özen Pide Kebap Lahmacun\n`;
+  text += `Masa: ${masa}\n`;
+  if(musteri) text += `Müşteri: ${musteri}\n`;
+  text += `\n${lines.join('\n')}\n\nToplam: ₺${cartTotal()}`;
+  if(not) text += `\n\nNot: ${not}`;
+
+  const btn = document.getElementById('sendOrder');
+  btn.disabled = true; btn.textContent = 'Gönderiliyor...';
+  try{
+    const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ chat_id: CHAT_ID, text })
+    });
+    const data = await res.json();
+    if(data.ok){
+      showToast('Siparişiniz alındı! 🔥');
+      Object.keys(cart).forEach(id=>delete cart[id]);
+      renderCart();
+      closeCart();
+    } else {
+      showToast('Sipariş gönderilemedi: '+(data.description||'bilinmeyen hata'), true);
+    }
+  } catch(err){
+    showToast('Bağlantı hatası, tekrar deneyin.', true);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Siparişi Gönder';
+  }
+});
+
+/* ---------------- scroll reveal ---------------- */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('in');
+      observer.unobserve(entry.target);
+    }
+  });
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+/* ---------------- QR code system ---------------- */
+const masaSelect = document.getElementById('masaNo');
+const cartMasaSelect = document.getElementById('cartMasa');
+for(let i=1;i<=12;i++){
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = 'Masa ' + i;
+  masaSelect.appendChild(opt);
+  cartMasaSelect.appendChild(opt.cloneNode(true));
+}
+
+let qr;
+function buildUrl(masa){
+  const base = window.location.href.split('?')[0].split('#')[0];
+  return base + '?masa=' + masa + '#pide';
+}
+function renderQR(masa){
+  document.getElementById('qrcode').innerHTML = '';
+  qr = new QRCode(document.getElementById('qrcode'), {
+    text: buildUrl(masa),
+    width: 176,
+    height: 176,
+    colorDark: '#160f0b',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.H
+  });
+  document.getElementById('qrCaption').textContent = 'MASA ' + masa + ' · SCAN TO ORDER';
+}
+
+const params = new URLSearchParams(window.location.search);
+const initialMasa = params.get('masa') || '1';
+masaSelect.value = initialMasa;
+cartMasaSelect.value = initialMasa;
+renderQR(initialMasa);
+
+masaSelect.addEventListener('change', ()=> renderQR(masaSelect.value));
+</script>
+</body>
+</html>
